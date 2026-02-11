@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
-
-public class Timer
+public class GameTimer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     public float timer = 5;
