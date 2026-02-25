@@ -3,9 +3,10 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    public float timer = 5;
+    public float timer = 300f;
     public AudioSource audioSource;
     public AudioClip clip;
+    private bool timerEnded = false;
     
     //update
     void Update()
