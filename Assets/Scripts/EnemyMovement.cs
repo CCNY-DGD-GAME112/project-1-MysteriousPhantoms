@@ -11,9 +11,9 @@ public class EnemyMovement : MonoBehaviour
         transform.Translate(Vector3.right * speed * direction * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("Boundary"))
+        if (collision.gameObject.tag == "Boundary")
         {
             // Turn around
             direction *= -1;
