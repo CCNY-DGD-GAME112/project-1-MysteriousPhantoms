@@ -4,7 +4,7 @@ public class EnemyMovement : MonoBehaviour
 {
     public float speed = 3f;
     private int direction = 1; // 1 = right, -1 = left
-
+    
     void Update()
     {
         // Move left or right
