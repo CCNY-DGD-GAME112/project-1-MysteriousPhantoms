@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EnemyShoot : MonoBehaviour
 {
-    public GameObject paperPrefab;      // Assign Paper prefab
-    public Transform firePoint;         // Empty child object slightly below enemy
-    public float shootDelay = 2f;       // Time between shots
+    public GameObject paperPrefab;  
+    public Transform firePoint;
+    public float shootDelay = 2f;
 
     void Start()
     {
@@ -13,7 +13,7 @@ public class EnemyShoot : MonoBehaviour
 
     void Shoot()
     {
-        // Spawn paper at firePoint, not parented to enemy
+        // Spawn paper at firePoint
         Instantiate(paperPrefab, firePoint.position, Quaternion.identity);
     }
 }

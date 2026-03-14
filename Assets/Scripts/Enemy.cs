@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        // Reset rotation to avoid weird movement
+        // stops weird movement
         transform.rotation = Quaternion.identity;
 
         // Stop Rigidbody2D if exists

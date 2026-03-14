@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [Header("Score & Timer")]
     public int score = 0;
     public TextMeshProUGUI scoreText;
-    public float roundTime = 30f;
+    public float roundTime = 60f;
     public TextMeshProUGUI timerText;
 
     [Header("Game Over UI")]
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Win UI")]
     public GameObject winPanel;
-    public int scoreToWin = 50;
+    public int scoreToWin = 200;
 
     private bool isGameOver = false;
 
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         score += amount;
         UpdateScoreText();
 
-        // Check Win condition
+        // Win condition
         if (score >= scoreToWin)
         {
             WinGame();

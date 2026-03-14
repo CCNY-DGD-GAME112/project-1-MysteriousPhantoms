@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;      // Assign your Enemy prefab
+    public GameObject enemyPrefab;
     public float spawnInterval = 1.5f;  // Seconds between spawns
-    public float xMin = -7f;            // Left screen edge
-    public float xMax = 7f;             // Right screen edge
-    public float ySpawn = 6f;           // Top of screen
+    public float xMin = -7f;            // Left screen
+    public float xMax = 7f;             // Right screen
+    public float ySpawn = 6f;           // Top screen
 
     void Start()
     {
-        // Spawn first enemy after 1 second, repeat every spawnInterval
+        // spawnInterval is the time between the spawning of entities
+        // InvokeRepeating calls a method repeatedly at a fixed time interval
         InvokeRepeating("SpawnEnemy", 1f, spawnInterval);
     }
 
