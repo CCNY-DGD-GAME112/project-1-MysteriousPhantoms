@@ -5,36 +5,45 @@ public class PlayerLives : MonoBehaviour
 {
     public int lives = 3;
     public Image[] livesUI;
-    void Start()
+
+    // Track if damage was already applied in this frame to prevent double hits, I had to research this script.
+    private bool tookDamageThisFrame = false;
+
+    private void Update()
     {
-        
-    }
-    void Update()
-    {
-        
+        // Reset flag each frame
+        tookDamageThisFrame = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.collider.gameObject.tag == "Enemy")
+        if (tookDamageThisFrame) return;
+
+        if (other.CompareTag("Enemy") || other.CompareTag("Paper"))
         {
-            Destroy(collision.collider.gameObject);
-            lives -= 1;
-            for (int i = 0; i < livesUI.Length; i++)
-            {
-                if (i < lives)
-                    {
-                    livesUI[i].enabled = true;
-                    }
-                else
-                {
-                    livesUI[i].enabled = false;
-                }
-            }
-            if (lives <= 0)
-            {
-                Destroy(gameObject);
-            }
+            Destroy(other.gameObject);
+            TakeDamage(1);
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (tookDamageThisFrame) return;
+
+        lives -= amount;
+        tookDamageThisFrame = true;
+
+        // Update UI
+        for (int i = 0; i < livesUI.Length; i++)
+        {
+            livesUI[i].enabled = i < lives;
+        }
+
+        // Check Game Over
+        if (lives <= 0)
+        {
+            lives = 0;
+            GameManager.instance.GameOver();
         }
     }
 }
