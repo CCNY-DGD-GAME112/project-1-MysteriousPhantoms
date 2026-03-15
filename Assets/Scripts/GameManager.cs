@@ -1,129 +1,81 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [Header("Score & Timer")]
     public int score = 0;
+    public int scoreToWin = 250;
+
     public TextMeshProUGUI scoreText;
-    public float roundTime = 60f;
     public TextMeshProUGUI timerText;
 
-    [Header("Game Over UI")]
-    public GameObject gameOverPanel;
+    public GameObject loseScreen;
+    public GameObject winScreen;
 
-    [Header("Win UI")]
-    public GameObject winPanel;
-    public int scoreToWin = 200;
+    public float roundTime = 30f;
 
-    private bool isGameOver = false;
-
-    private void Awake()
+    void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
-    private void Start()
+    void Start()
     {
         UpdateScoreText();
-        UpdateTimerText();
-
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
-        if (winPanel != null) winPanel.SetActive(false);
     }
 
-    private void Update()
+    void Update()
     {
-        if (isGameOver) return;
-
-        // Countdown timer
         if (roundTime > 0)
         {
             roundTime -= Time.deltaTime;
-            UpdateTimerText();
+
+            timerText.text = "Time: " + Mathf.FloorToInt(roundTime);
+
+            if (score >= scoreToWin)
+            {
+                WinGame();
+            }
 
             if (roundTime <= 0)
             {
-                roundTime = 0;
-                GameOver();
+                LoseGame();
             }
         }
     }
 
     public void AddScore(int amount)
     {
-        if (isGameOver) return;
-
         score += amount;
         UpdateScoreText();
-
-        // Win condition
-        if (score >= scoreToWin)
-        {
-            WinGame();
-        }
     }
 
     void UpdateScoreText()
     {
-        if (scoreText != null)
-            scoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + score;
     }
 
-    void UpdateTimerText()
+    public void LoseGame()
     {
-        if (timerText != null)
-        {
-            int minutes = Mathf.FloorToInt(roundTime / 60);
-            int seconds = Mathf.FloorToInt(roundTime % 60);
-            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-    }
-
-    public void GameOver()
-    {
-        if (isGameOver) return;
-        isGameOver = true;
-
-        Debug.Log("Game Over!");
-
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
-
-        StopAllGameplay();
+        loseScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     void WinGame()
     {
-        if (isGameOver) return;
-        isGameOver = true;
-
-        Debug.Log("You Win!");
-
-        if (winPanel != null)
-            winPanel.SetActive(true);
-
-        StopAllGameplay();
+        winScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
-    private void StopAllGameplay()
+    public void RestartGame()
     {
-        // Stop all spawners
-        EnemySpawner[] spawners = FindObjectsOfType<EnemySpawner>();
-        foreach (var spawner in spawners)
-            spawner.enabled = false;
-
-        // Stop all enemies
-        EnemyShoot[] enemies = FindObjectsOfType<EnemyShoot>();
-        foreach (var enemy in enemies)
-            enemy.enabled = false;
-
-        // Stop player
-        PlayerController player = FindObjectOfType<PlayerController>();
-        if (player != null)
-            player.enabled = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

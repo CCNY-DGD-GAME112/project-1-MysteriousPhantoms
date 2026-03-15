@@ -7,22 +7,20 @@ public class Paper : MonoBehaviour
 
     void Update()
     {
-        
         transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
-        
-        
+
         if (transform.position.y < -6f)
             Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
         if (hasHitPlayer) return;
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerLives player = collision.gameObject.GetComponent<PlayerLives>();
+            PlayerLives player = other.GetComponent<PlayerLives>();
+
             if (player != null)
                 player.TakeDamage(1);
 
